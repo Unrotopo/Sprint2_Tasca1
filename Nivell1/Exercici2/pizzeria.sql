@@ -1,199 +1,67 @@
--- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
---
--- Host: 127.0.0.1    Database: pizzeria
--- ------------------------------------------------------
--- Server version	8.0.41
+-- MySQL Workbench Synchronization
+-- Generated: 2025-05-06 11:06
+-- Model: New Model
+-- Version: 1.0
+-- Project: Name of the project
+-- Author: otror
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
---
--- Table structure for table `city`
---
+ALTER SCHEMA `pizzeria`  DEFAULT CHARACTER SET utf8  DEFAULT COLLATE utf8_general_ci ;
 
-DROP TABLE IF EXISTS `city`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `city` (
-  `city_id` int NOT NULL AUTO_INCREMENT,
-  `city_name` varchar(45) DEFAULT NULL,
-  `region_region_id` int NOT NULL,
-  PRIMARY KEY (`city_id`),
-  KEY `fk_city_region_idx` (`region_region_id`),
-  CONSTRAINT `fk_city_region` FOREIGN KEY (`region_region_id`) REFERENCES `region` (`region_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
+ALTER TABLE `pizzeria`.`client` 
+CHARACTER SET = utf8 , COLLATE = utf8_general_ci ,
+CHANGE COLUMN `client_name` `client_name` VARCHAR(45) NOT NULL ,
+CHANGE COLUMN `client_surname` `client_surname` VARCHAR(45) NOT NULL ,
+CHANGE COLUMN `client_phone` `client_phone` VARCHAR(45) NOT NULL ;
 
---
--- Table structure for table `client`
---
+ALTER TABLE `pizzeria`.`city` 
+CHARACTER SET = utf8 , COLLATE = utf8_general_ci ,
+CHANGE COLUMN `city_name` `city_name` VARCHAR(45) NOT NULL ;
 
-DROP TABLE IF EXISTS `client`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `client` (
-  `client_id` int NOT NULL AUTO_INCREMENT,
-  `client_name` varchar(45) DEFAULT NULL,
-  `client_surname` varchar(45) DEFAULT NULL,
-  `client_address` varchar(45) DEFAULT NULL,
-  `client_zip_code` varchar(45) DEFAULT NULL,
-  `client_phone` varchar(45) DEFAULT NULL,
-  `city_city_id` int NOT NULL,
-  PRIMARY KEY (`client_id`),
-  KEY `fk_client_city1_idx` (`city_city_id`),
-  CONSTRAINT `fk_client_city1` FOREIGN KEY (`city_city_id`) REFERENCES `city` (`city_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
+ALTER TABLE `pizzeria`.`region` 
+CHARACTER SET = utf8 , COLLATE = utf8_general_ci ,
+CHANGE COLUMN `region_name` `region_name` VARCHAR(45) NOT NULL ;
 
---
--- Table structure for table `employee`
---
+ALTER TABLE `pizzeria`.`order` 
+CHARACTER SET = utf8 , COLLATE = utf8_general_ci ,
+CHANGE COLUMN `order_creation` `order_creation` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+CHANGE COLUMN `order_type` `order_type` ENUM("restaurant", "take_away") NOT NULL ,
+CHANGE COLUMN `order_price` `order_price` DECIMAL(10,2) NOT NULL ;
 
-DROP TABLE IF EXISTS `employee`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `employee` (
-  `employee_id` int NOT NULL AUTO_INCREMENT,
-  `employee_name` varchar(45) DEFAULT NULL,
-  `employee_surname` varchar(45) DEFAULT NULL,
-  `employee_id_num` varchar(45) DEFAULT NULL,
-  `employee_phone` varchar(45) DEFAULT NULL,
-  `employee_position` enum('delivery','cook') DEFAULT NULL,
-  `shop_shop_id` int NOT NULL,
-  PRIMARY KEY (`employee_id`),
-  KEY `fk_employee_shop1_idx` (`shop_shop_id`),
-  CONSTRAINT `fk_employee_shop1` FOREIGN KEY (`shop_shop_id`) REFERENCES `shop` (`shop_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
+ALTER TABLE `pizzeria`.`pizza_category` 
+CHARACTER SET = utf8 , COLLATE = utf8_general_ci ,
+CHANGE COLUMN `pizza_category_name` `pizza_category_name` VARCHAR(45) NOT NULL ;
 
---
--- Table structure for table `order`
---
+ALTER TABLE `pizzeria`.`shop` 
+CHARACTER SET = utf8 , COLLATE = utf8_general_ci ,
+CHANGE COLUMN `shop_address` `shop_address` VARCHAR(45) NOT NULL ,
+CHANGE COLUMN `shop_zip_code` `shop_zip_code` VARCHAR(45) NOT NULL ;
 
-DROP TABLE IF EXISTS `order`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `order` (
-  `order_id` int NOT NULL AUTO_INCREMENT,
-  `order_creation` datetime DEFAULT CURRENT_TIMESTAMP,
-  `order_type` enum('restaurant','take_away') DEFAULT NULL,
-  `order_price` decimal(10,2) DEFAULT NULL,
-  `client_client_id` int NOT NULL,
-  `employee_employee_id` int NOT NULL,
-  `shop_shop_id` int NOT NULL,
-  PRIMARY KEY (`order_id`),
-  KEY `fk_order_client1_idx` (`client_client_id`),
-  KEY `fk_order_employee1_idx` (`employee_employee_id`),
-  KEY `fk_order_shop1_idx` (`shop_shop_id`),
-  CONSTRAINT `fk_order_client1` FOREIGN KEY (`client_client_id`) REFERENCES `client` (`client_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_order_employee1` FOREIGN KEY (`employee_employee_id`) REFERENCES `employee` (`employee_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_order_shop1` FOREIGN KEY (`shop_shop_id`) REFERENCES `shop` (`shop_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
+ALTER TABLE `pizzeria`.`employee` 
+CHARACTER SET = utf8 , COLLATE = utf8_general_ci ,
+CHANGE COLUMN `employee_name` `employee_name` VARCHAR(45) NOT NULL ,
+CHANGE COLUMN `employee_surname` `employee_surname` VARCHAR(45) NOT NULL ,
+CHANGE COLUMN `employee_id_num` `employee_id_num` VARCHAR(45) NOT NULL ,
+CHANGE COLUMN `employee_phone` `employee_phone` VARCHAR(45) NOT NULL ,
+CHANGE COLUMN `employee_position` `employee_position` ENUM("delivery", "cook") NOT NULL ;
 
---
--- Table structure for table `order_uniques`
---
+ALTER TABLE `pizzeria`.`products` 
+CHARACTER SET = utf8 , COLLATE = utf8_general_ci ,
+CHANGE COLUMN `products_name` `products_name` VARCHAR(45) NOT NULL ,
+CHANGE COLUMN `products_description` `products_description` VARCHAR(45) NOT NULL ,
+CHANGE COLUMN `products_picture` `products_picture` BLOB NOT NULL ,
+CHANGE COLUMN `products_price` `products_price` DECIMAL(10,2) NOT NULL ,
+CHANGE COLUMN `products_type` `products_type` ENUM("pizzas", "burguers", "drinks") NOT NULL ;
 
-DROP TABLE IF EXISTS `order_uniques`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `order_uniques` (
-  `order_uniques_id` int NOT NULL AUTO_INCREMENT,
-  `order_uniques_amount` int DEFAULT NULL,
-  `order_uniques_price` decimal(10,2) DEFAULT NULL,
-  `products_products_id` int NOT NULL,
-  `order_order_id` int NOT NULL,
-  PRIMARY KEY (`order_uniques_id`),
-  KEY `fk_order_uniques_products1_idx` (`products_products_id`),
-  KEY `fk_order_uniques_order1_idx` (`order_order_id`),
-  CONSTRAINT `fk_order_uniques_order1` FOREIGN KEY (`order_order_id`) REFERENCES `order` (`order_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_order_uniques_products1` FOREIGN KEY (`products_products_id`) REFERENCES `products` (`products_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
+ALTER TABLE `pizzeria`.`order_uniques` 
+CHARACTER SET = utf8 , COLLATE = utf8_general_ci ,
+CHANGE COLUMN `order_uniques_amount` `order_uniques_amount` INT(11) NOT NULL ,
+CHANGE COLUMN `order_uniques_price` `order_uniques_price` DECIMAL(10,2) NOT NULL ;
 
---
--- Table structure for table `pizza_category`
---
 
-DROP TABLE IF EXISTS `pizza_category`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `pizza_category` (
-  `pizza_category_id` int NOT NULL AUTO_INCREMENT,
-  `pizza_category_name` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`pizza_category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `products`
---
-
-DROP TABLE IF EXISTS `products`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `products` (
-  `products_id` int NOT NULL AUTO_INCREMENT,
-  `products_name` varchar(45) DEFAULT NULL,
-  `products_description` varchar(45) DEFAULT NULL,
-  `products_picture` blob,
-  `products_price` decimal(10,2) DEFAULT NULL,
-  `products_type` enum('pizzas','burguers','drinks') DEFAULT NULL,
-  `pizza_category_pizza_category_id` int DEFAULT NULL,
-  PRIMARY KEY (`products_id`),
-  KEY `fk_product_pizza_cathegory1_idx` (`pizza_category_pizza_category_id`),
-  CONSTRAINT `fk_product_pizza_cathegory1` FOREIGN KEY (`pizza_category_pizza_category_id`) REFERENCES `pizza_category` (`pizza_category_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `region`
---
-
-DROP TABLE IF EXISTS `region`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `region` (
-  `region_id` int NOT NULL AUTO_INCREMENT,
-  `region_name` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`region_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `shop`
---
-
-DROP TABLE IF EXISTS `shop`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `shop` (
-  `shop_id` int NOT NULL AUTO_INCREMENT,
-  `shop_address` varchar(45) DEFAULT NULL,
-  `shop_zip_code` varchar(45) DEFAULT NULL,
-  `city_city_id` int NOT NULL,
-  PRIMARY KEY (`shop_id`),
-  KEY `fk_shop_city1_idx` (`city_city_id`),
-  CONSTRAINT `fk_shop_city1` FOREIGN KEY (`city_city_id`) REFERENCES `city` (`city_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2025-04-20 13:20:50
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
